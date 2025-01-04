@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block start %}
+<header>
+<!-- Container to center the form -->
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #f4f7fc;">
+    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%; border-radius: 12px;">
+        <h2 class="text-center mb-4 text-dark" style="font-size: 28px;">Update Recipe</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Recipe Name -->
+            <div class="mb-3">
+                <label for="receipe_name" class="form-label text-dark" style="font-size: 18px;">Receipe Name</label>
+                <input name="receipe_name" value="{{receipe.receipe_name}}" required type="text" class="form-control form-control-lg" id="recipeName"  style="border-radius: 8px; font-size: 16px;">
+            </div>
+            <br>
+
+            <!-- Recipe Description -->
+            <div class="mb-3">
+                <label for="recipeDescription"  class="form-label text-dark" style="font-size: 18px;">Recipe Description</label>
+                <textarea class="form-control form-control-lg"  name="receipe_description" required id="recipeDescription"  rows="2" style="border-radius: 8px; font-size: 16px;">{{receipe.receipe_description}}</textarea>
+            </div>
+            <br>
+
+            <!-- Recipe Image -->
+            <div class="mb-3">
+                <label for="recipeImage" class="form-label text-dark" style="font-size: 18px;">Upload Recipe Image</label>
+                <input  name="receipe_image" type="file"  class="form-control form-control-lg" id="recipeImage" style="border-radius: 8px; font-size: 16px;">
+            </div>
+            <br>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn w-100" style="background-color: #4CAF50; color: white; border-radius: 8px; padding: 12px; font-size: 18px; transition: background-color 0.3s ease;">
+               Add Recipe
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Optional Animation on hover effect for submit button -->
+<style>
+    .btn:hover {
+        background-color: #45a049;
+        transform: translateY(-2px);
+    }
+</style>
+{{recipe}}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Reciepe Name</th>
+        <th scope="col">Reciepe Description</th>
+        <th scope="col">Image</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for receipe in receipes %}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{ receipe.receipe_name }}</td>
+            <td>{{ receipe.receipe_description }}</td>
+            <td><img src="{{ receipe.receipe_image.url }}" alt="{{ receipe.receipe_name }}" style="max-width: 100px; height: auto;"></td>
+            <td><a href="{% url 'delete_receipe' receipe.id %}" class="btn btn-danger">Update</a></td>
+        </tr>
+    {% endfor %}
+    
+    </tbody>
+  </table>
+</header>
+{% endblock %}

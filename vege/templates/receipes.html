@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Recipe List{% endblock %}
+
+{% block start %}
+
+
+<!-- Recipe Submission Form -->
+<div class="card">
+  <h2 class="text-center">Add Your Recipe</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="receipe_name" class="form-label">Recipe Name</label>
+      <input name="receipe_name" required type="text" class="form-control-lg" id="recipeName">
+    </div>
+
+    <div class="mb-3">
+      <label for="recipeDescription" class="form-label">Recipe Description</label>
+      <textarea class="form-control-lg" name="receipe_description" required id="recipeDescription" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="recipeImage" class="form-label">Upload Recipe Image</label>
+      <input name="receipe_image" type="file" class="form-control-lg" id="recipeImage">
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Add Recipe</button>
+  </form>
+</div>
+
+<!-- Recipe List Table -->
+<div class="table-container">
+  <h2 class="text-center mb-4">All Recipes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Recipe Name</th>
+        <th>Recipe Description</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for receipe in receipes %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ receipe.receipe_name }}</td>
+        <td>{{ receipe.receipe_description }}</td>
+        <td><img src="{{ receipe.receipe_image.url }}" alt="{{ receipe.receipe_name }}"></td>
+        <td>
+          <a href="{% url 'delete_receipe' receipe.id %}" class="btn btn-danger">Delete</a>
+          <a href="{% url 'update_receipe' receipe.id %}" class="btn btn-primary">Update</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
